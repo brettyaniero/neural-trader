@@ -1,4 +1,4 @@
-import StockData.RSIStockData;
+import StockData.CCIStockData;
 import StockData.StockMovement;
 
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ public class App {
     public static final String API_KEY = "GMGWOUIFSQ7HLN85";
 
     public static void main(String[] args) {
-        RSIStockData stockData = new RSIStockData();
+        CCIStockData stockData = new CCIStockData();
         ArrayList<StockMovement> stockMovements = stockData.getStockData(API_KEY, "MSFT", 9);
         for (int i = 0; i < stockMovements.size(); i++)
         {
             System.out.println("Time: " + stockMovements.get(i).getLocalDateTime());
-            System.out.println("RSI: " + stockMovements.get(i).getTechIndicatorVal());
+            System.out.println("CCI: " + stockMovements.get(i).getTechIndicatorVal());
             System.out.println("Movement: " + stockMovements.get(i).getStockMovementPct());
         }
     }

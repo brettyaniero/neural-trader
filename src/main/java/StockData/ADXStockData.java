@@ -4,11 +4,10 @@ import org.patriques.AlphaVantageConnector;
 import org.patriques.TechnicalIndicators;
 import org.patriques.TimeSeries;
 import org.patriques.input.technicalindicators.Interval;
-import org.patriques.input.technicalindicators.SeriesType;
 import org.patriques.input.technicalindicators.TimePeriod;
 import org.patriques.input.timeseries.OutputSize;
 import org.patriques.output.AlphaVantageException;
-import org.patriques.output.technicalindicators.RSI;
+import org.patriques.output.technicalindicators.ADX;
 import org.patriques.output.technicalindicators.data.IndicatorData;
 import org.patriques.output.timeseries.Daily;
 
@@ -17,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * This object retrieves the relative strength index (RSI) history of
+ * This object retrieves the average directional movement index (ADX) value of
  * any given stock.
  */
 
-public class RSIStockData implements StockData
+public class ADXStockData implements StockData
 {
     @Override
     public ArrayList<StockMovement> getStockData(String api_key, String tickerSymbol, int targetHour)
@@ -41,17 +40,16 @@ public class RSIStockData implements StockData
                     timeSeriesResponse.getStockData();
 
             stockData.forEach(stock -> {
-                StockMovement dailyStockMovement = new StockMovement("RSI", stock.getDateTime());
+                StockMovement dailyStockMovement = new StockMovement("ADX", stock.getDateTime());
                 dailyStockMovement.setStockMovementPct((stock.getClose() - stock.getOpen()) / stock.getOpen());
                 stockMovements.add(dailyStockMovement);
             });
 
-            /* Get the RSI of the stock */
-            RSI techIndicatorsResponse = technicalIndicators.rsi(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10),
-                    SeriesType.OPEN);
-            List<IndicatorData> rsiData = techIndicatorsResponse.getData();
+            /* Get the ADX of the stock */
+            ADX techIndicatorsResponse = technicalIndicators.adx(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10));
+            List<IndicatorData> adxData = techIndicatorsResponse.getData();
 
-            rsiData.forEach(data -> {
+            adxData.forEach(data -> {
                 if (data.getDateTime().getHour() == targetHour)
                 {
                     for (int i = 0; i < stockMovements.size(); i++)
