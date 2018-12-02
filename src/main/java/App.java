@@ -1,3 +1,4 @@
+import NeuralNetwork.NeuralNetwork;
 import StockData.CCIStockData;
 import StockData.CMOStockData;
 import StockData.StockMovement;
@@ -12,13 +13,7 @@ public class App {
     public static final String API_KEY = "GMGWOUIFSQ7HLN85";
 
     public static void main(String[] args) {
-        TRIXStockData stockData = new TRIXStockData();
-        ArrayList<StockMovement> stockMovements = stockData.getStockData(API_KEY, "MSFT", 9);
-        for (int i = 0; i < stockMovements.size(); i++)
-        {
-            System.out.println("Time: " + stockMovements.get(i).getLocalDateTime());
-            System.out.println("TRIX: " + stockMovements.get(i).getTechIndicatorVal());
-            System.out.println("Movement: " + stockMovements.get(i).getStockMovementPct());
-        }
+        NeuralNetwork network = new NeuralNetwork(3, 10);
+
     }
 }
