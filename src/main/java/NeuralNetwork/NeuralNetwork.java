@@ -15,8 +15,16 @@ public class NeuralNetwork
         /* Initialize input and output layers */
         inputLayer = new NeuralNetworkLayer();
         ArrayList<Neuron> inputNeurons = new ArrayList<>();
-        inputNeurons.add(new Neuron(110));
-        inputNeurons.add(new Neuron(-1.11));
+        inputNeurons.add(new Neuron(0.99));
+        inputNeurons.add(new Neuron(0.67));
+        inputNeurons.add(new Neuron(0.43));
+        inputNeurons.add(new Neuron(0.75));
+        inputNeurons.add(new Neuron(0.22));
+        inputNeurons.add(new Neuron(0.99));
+        inputNeurons.add(new Neuron(0.67));
+        inputNeurons.add(new Neuron(0.43));
+        inputNeurons.add(new Neuron(0.75));
+        inputNeurons.add(new Neuron(0.22));
         inputLayer.neurons = inputNeurons;
         outputLayer = new NeuralNetworkLayer();
         ArrayList<Neuron> outputNeurons = new ArrayList<>();
@@ -31,8 +39,10 @@ public class NeuralNetwork
         /* Create connections between neurons */
         createConnections();
 
-        outputLayer.neurons.get(0).getOutput();
-        System.out.println();
+        double output = outputLayer.neurons.get(0).getOutput();
+        double output2 = outputLayer.neurons.get(1).getOutput();
+        System.out.println("Output 1: " + output);
+        System.out.println("Output 2: " + output2);
     }
 
     private void createHiddenLayers(int numLayers, int numNeurons)

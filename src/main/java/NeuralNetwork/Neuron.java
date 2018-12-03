@@ -25,7 +25,7 @@ public class Neuron
         this.inputConnections = new ArrayList<>();
         this.outputConnections = new ArrayList<>();
         sumFunction = new WeightedInputSumFunction();
-        activationFunction = new SigmoidActivationFunction();
+        activationFunction = new ReLUActivationFunction();
     }
 
     /* This constructor should be used if this neuron is part of the input layer */
@@ -34,7 +34,7 @@ public class Neuron
         this.inputConnections = new ArrayList<>();
         this.outputConnections = new ArrayList<>();
         sumFunction = new WeightedInputSumFunction();
-        activationFunction = new SigmoidActivationFunction();
+        activationFunction = new ReLUActivationFunction();
         this.startValue = startValue;
     }
 
@@ -44,7 +44,6 @@ public class Neuron
         {
             double input = sumFunction.inputSumFunction(inputConnections);
 
-            System.out.println("Normalized input: " + activationFunction.normalize(input));
             return activationFunction.normalize(input);
         }
         else
