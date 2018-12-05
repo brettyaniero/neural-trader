@@ -23,14 +23,6 @@ public class NeuralNetwork
         ArrayList<Neuron> inputNeurons = new ArrayList<>();
         inputNeurons.add(new Neuron(0.99));
         inputNeurons.add(new Neuron(0.67));
-        inputNeurons.add(new Neuron(0.43));
-        inputNeurons.add(new Neuron(0.75));
-        inputNeurons.add(new Neuron(0.22));
-        inputNeurons.add(new Neuron(0.99));
-        inputNeurons.add(new Neuron(0.67));
-        inputNeurons.add(new Neuron(0.43));
-        inputNeurons.add(new Neuron(0.75));
-        inputNeurons.add(new Neuron(0.22));
         inputLayer.neurons = inputNeurons;
         outputLayer = new NeuralNetworkLayer();
         ArrayList<Neuron> outputNeurons = new ArrayList<>();
@@ -49,6 +41,8 @@ public class NeuralNetwork
         targetOutput = 2;
         learningRate = 0.4;
         System.out.println("Output 1: " + actualOutput);
+        this.gradientDescent();
+        this.updateEdgeWeights();
     }
 
     private void createHiddenLayers(int numLayers, int numNeurons)
@@ -197,6 +191,38 @@ public class NeuralNetwork
             }
 
             this.inputLayer.neurons.get(neuron).deltaError = deltaSum;
+        }
+    }
+
+    private void updateEdgeWeights()
+    {
+        /* Update edge weights for the hidden layers */
+        for (int layer = 1; layer < this.hiddenLayers.size(); layer++)
+        {
+            for (int neuron = 0; neuron < this.hiddenLayers.get(layer).neurons.size(); neuron++)
+            {
+                for (int connection = 0; connection < this.hiddenLayers.get(layer).neurons.get(neuron)
+                        .inputConnections.size(); connection++)
+                {
+                    double deltaWeight = (-1) * this.learningRate
+                            * this.hiddenLayers.get(layer).neurons.get(neuron).deltaError
+                            * this.hiddenLayers.get(layer).neurons.get(neuron).inputConnections.get(connection)
+                                .fromNeuron.getOutput();
+                    this.hiddenLayers.get(layer).neurons.get(neuron).inputConnections.get(connection).edgeWeight
+                            += deltaWeight;
+                }
+            }
+        }
+
+        /* Update edge weights for the output layer */
+        for (int connection = 0; connection < this.outputLayer.neurons.get(0).inputConnections.size(); connection++)
+        {
+            double deltaWeight = (-1) * this.learningRate
+                    * this.outputLayer.neurons.get(0).deltaError
+                    * this.outputLayer.neurons.get(0).inputConnections.get(connection)
+                    .fromNeuron.getOutput();
+            this.outputLayer.neurons.get(0).inputConnections.get(connection).edgeWeight
+                    += deltaWeight;
         }
     }
 }
