@@ -206,6 +206,7 @@ public class NeuralNetwork
                 {
                     double deltaWeight = (-1) * this.learningRate
                             * this.hiddenLayers.get(layer).neurons.get(neuron).deltaError
+                            * this.hiddenLayers.get(layer).neurons.get(neuron).getOutput() > 0 ? 1 : 0
                             * this.hiddenLayers.get(layer).neurons.get(neuron).inputConnections.get(connection)
                                 .fromNeuron.getOutput();
                     this.hiddenLayers.get(layer).neurons.get(neuron).inputConnections.get(connection).edgeWeight
@@ -219,8 +220,9 @@ public class NeuralNetwork
         {
             double deltaWeight = (-1) * this.learningRate
                     * this.outputLayer.neurons.get(0).deltaError
+                    * this.outputLayer.neurons.get(0).getOutput() > 0 ? 1 : 0
                     * this.outputLayer.neurons.get(0).inputConnections.get(connection)
-                    .fromNeuron.getOutput();
+                        .fromNeuron.getOutput();
             this.outputLayer.neurons.get(0).inputConnections.get(connection).edgeWeight
                     += deltaWeight;
         }
