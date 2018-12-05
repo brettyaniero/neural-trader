@@ -63,7 +63,7 @@ public class NeuralNetwork
         }
     }
 
-    private void createConnections()
+    private void createInputConnections()
     {
         /* Create connections between input layer and the first hidden layer */
         for (int hiddenLayerNeuron = 0; hiddenLayerNeuron < hiddenLayers.get(0).neurons.size(); hiddenLayerNeuron++)
@@ -80,7 +80,10 @@ public class NeuralNetwork
                 hiddenLayers.get(0).neurons.get(hiddenLayerNeuron).inputConnections.add(connection);
             }
         }
+    }
 
+    private void createHiddenLayerConnections()
+    {
         /* Create connections between subsequent hidden layers */
         if (hiddenLayers.size() > 1)
         {
@@ -114,7 +117,10 @@ public class NeuralNetwork
                 }
             }
         }
+    }
 
+    private void createOutputConnections()
+    {
         /* Create connections between the last hidden layer and the output layer */
         for (int hiddenLayerNeuron = 0; hiddenLayerNeuron < hiddenLayers.get(hiddenLayers.size() - 1).neurons.size();
              hiddenLayerNeuron++)
@@ -131,6 +137,22 @@ public class NeuralNetwork
                         .add(connection);
                 outputLayer.neurons.get(outputLayerNeuron).inputConnections.add(connection);
             }
+        }
+    }
+
+    private void createConnections()
+    {
+        createInputConnections();
+        createHiddenLayerConnections();
+        createOutputConnections();
+    }
+
+    private void gradientDescent(ArrayList<Double> actualOutput, ArrayList<Double> targetOutput)
+    {
+        /* Calculate error of training input */
+        for (int i = 0; i < actualOutput.size(); i++)
+        {
+
         }
     }
 }
