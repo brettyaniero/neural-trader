@@ -13,7 +13,7 @@ public class App {
     public static final String API_KEY = "GMGWOUIFSQ7HLN85";
 
     public static void main(String[] args) {
-        NeuralNetwork network = new NeuralNetwork(2, 4);
+        NeuralNetwork network = new NeuralNetwork(1, 2);
 
     }
 }

@@ -20,7 +20,7 @@ public class Neuron
     protected double deltaError = 0;
 
     /* Start value if this neuron is part of the input layer */
-    private double startValue = 0;
+    protected double startValue = 0;
 
 
     public Neuron()

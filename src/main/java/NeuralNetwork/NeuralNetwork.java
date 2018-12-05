@@ -14,19 +14,16 @@ public class NeuralNetwork
     private double actualOutput;
     private double targetOutput;
 
-    private double error = 0;
-
     public NeuralNetwork(int numLayers, int numNeurons)
     {
         /* Initialize input and output layers */
         inputLayer = new NeuralNetworkLayer();
         ArrayList<Neuron> inputNeurons = new ArrayList<>();
-        inputNeurons.add(new Neuron(0.99));
-        inputNeurons.add(new Neuron(0.67));
+        inputNeurons.add(new Neuron());
+        inputNeurons.add(new Neuron());
         inputLayer.neurons = inputNeurons;
         outputLayer = new NeuralNetworkLayer();
         ArrayList<Neuron> outputNeurons = new ArrayList<>();
-        outputNeurons.add(new Neuron());
         outputNeurons.add(new Neuron());
         outputLayer.neurons = outputNeurons;
 
@@ -37,12 +34,22 @@ public class NeuralNetwork
         /* Create connections between neurons */
         createConnections();
 
-        actualOutput = outputLayer.neurons.get(0).getOutput();
-        targetOutput = 2;
-        learningRate = 0.4;
-        System.out.println("Output 1: " + actualOutput);
-        this.gradientDescent();
-        this.updateEdgeWeights();
+        for (int i = 1; i < 100; i++)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                inputLayer.neurons.get(x).startValue = i;
+            }
+
+            actualOutput = outputLayer.neurons.get(0).getOutput();
+            System.out.println("i = " + i + "\n" +
+                    "Actual output: " + actualOutput + "\n" +
+                    "Target output: " + (i * i));
+            targetOutput = i * i;
+            learningRate = 0.4;
+            this.gradientDescent();
+            this.updateEdgeWeights();
+        }
     }
 
     private void createHiddenLayers(int numLayers, int numNeurons)
