@@ -16,6 +16,9 @@ public class Neuron
     /* The activation function to be used on the summed inputs */
     protected ActivationFunction activationFunction;
 
+    /* The error in weight to be used during gradient descent */
+    protected double deltaError = 0;
+
     /* Start value if this neuron is part of the input layer */
     private double startValue = 0;
 

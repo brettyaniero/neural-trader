@@ -9,6 +9,12 @@ public class NeuralNetwork
     protected NeuralNetworkLayer inputLayer;
     protected NeuralNetworkLayer outputLayer;
     protected ArrayList<NeuralNetworkLayer> hiddenLayers;
+    protected double learningRate;
+
+    private double actualOutput;
+    private double targetOutput;
+
+    private double error = 0;
 
     public NeuralNetwork(int numLayers, int numNeurons)
     {
@@ -39,10 +45,10 @@ public class NeuralNetwork
         /* Create connections between neurons */
         createConnections();
 
-        double output = outputLayer.neurons.get(0).getOutput();
-        double output2 = outputLayer.neurons.get(1).getOutput();
-        System.out.println("Output 1: " + output);
-        System.out.println("Output 2: " + output2);
+        actualOutput = outputLayer.neurons.get(0).getOutput();
+        targetOutput = 2;
+        learningRate = 0.4;
+        System.out.println("Output 1: " + actualOutput);
     }
 
     private void createHiddenLayers(int numLayers, int numNeurons)
@@ -147,12 +153,50 @@ public class NeuralNetwork
         createOutputConnections();
     }
 
-    private void gradientDescent(ArrayList<Double> actualOutput, ArrayList<Double> targetOutput)
+    private void gradientDescent()
     {
-        /* Calculate error of training input */
-        for (int i = 0; i < actualOutput.size(); i++)
-        {
+        /* Start with the output layer and calculate error */
+        double derivedError = this.actualOutput - this.targetOutput;
+        int reluDerivativeValue = this.actualOutput > 0 ? 1 : 0;
+        this.outputLayer.neurons.get(0).deltaError = derivedError * reluDerivativeValue;
 
+        /* Move backwards through the hidden layers, calculating delta error value as we go */
+        for (int layer = this.hiddenLayers.size() - 1; layer >= 0; layer--)
+        {
+            for (int neuron = 0; neuron < this.hiddenLayers.get(layer).neurons.size(); neuron++)
+            {
+                double deltaSum = 0;
+
+                for (int connection = 0; connection < this.hiddenLayers.get(layer).neurons.get(neuron)
+                        .outputConnections.size(); connection++)
+                {
+                    double edgeWeight = this.hiddenLayers.get(layer).neurons.get(neuron).outputConnections
+                            .get(connection).edgeWeight;
+                    double deltaError = this.hiddenLayers.get(layer).neurons.get(neuron).outputConnections
+                            .get(connection).toNeuron.deltaError;
+                    deltaSum += edgeWeight * deltaError;
+                }
+
+                this.hiddenLayers.get(layer).neurons.get(neuron).deltaError = deltaSum;
+            }
+        }
+
+        /* Last step is to calculate the delta error for the input layer connections */
+        for (int neuron = 0; neuron < this.inputLayer.neurons.size(); neuron++)
+        {
+            double deltaSum = 0;
+
+            for (int connection = 0; connection < this.inputLayer.neurons.get(neuron)
+                    .outputConnections.size(); connection++)
+            {
+                double edgeWeight = this.inputLayer.neurons.get(neuron).outputConnections
+                        .get(connection).edgeWeight;
+                double deltaError = this.inputLayer.neurons.get(neuron).outputConnections
+                        .get(connection).toNeuron.deltaError;
+                deltaSum += edgeWeight * deltaError;
+            }
+
+            this.inputLayer.neurons.get(neuron).deltaError = deltaSum;
         }
     }
 }
