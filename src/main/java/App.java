@@ -1,6 +1,6 @@
 import NeuralNetwork.NeuralNetwork;
-import NeuralNetwork.ActivationFunction;
-import NeuralNetwork.SigmoidActivationFunction;
+import NeuralNetwork.ActivationFunctions.ActivationFunction;
+import NeuralNetwork.ActivationFunctions.SigmoidActivationFunction;
 
 import java.util.ArrayList;
 

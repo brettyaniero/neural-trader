@@ -1,4 +1,4 @@
-package NeuralNetwork;
+package NeuralNetwork.ActivationFunctions;
 
 public class ReLUActivationFunction implements ActivationFunction
 {

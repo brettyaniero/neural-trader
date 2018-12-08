@@ -1,5 +1,10 @@
 package NeuralNetwork;
 
+import NeuralNetwork.ActivationFunctions.ActivationFunction;
+import NeuralNetwork.ActivationFunctions.SigmoidActivationFunction;
+import NeuralNetwork.SumFunctions.InputSumFunction;
+import NeuralNetwork.SumFunctions.WeightedInputSumFunction;
+
 import java.util.ArrayList;
 
 public class Neuron
