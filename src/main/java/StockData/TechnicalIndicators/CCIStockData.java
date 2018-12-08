@@ -1,14 +1,15 @@
-package StockData;
+package StockData.TechnicalIndicators;
 
+import StockData.StockData;
+import StockData.StockMovement;
 import org.patriques.AlphaVantageConnector;
 import org.patriques.TechnicalIndicators;
 import org.patriques.TimeSeries;
 import org.patriques.input.technicalindicators.Interval;
-import org.patriques.input.technicalindicators.SeriesType;
 import org.patriques.input.technicalindicators.TimePeriod;
 import org.patriques.input.timeseries.OutputSize;
 import org.patriques.output.AlphaVantageException;
-import org.patriques.output.technicalindicators.RSI;
+import org.patriques.output.technicalindicators.CCI;
 import org.patriques.output.technicalindicators.data.IndicatorData;
 import org.patriques.output.timeseries.Daily;
 
@@ -16,12 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * This object retrieves the relative strength index (RSI) history of
- * any given stock.
- */
-
-public class RSIStockData implements StockData
+public class CCIStockData implements StockData
 {
     @Override
     public ArrayList<StockMovement> getStockData(String api_key, String tickerSymbol, int targetHour)
@@ -41,17 +37,16 @@ public class RSIStockData implements StockData
                     timeSeriesResponse.getStockData();
 
             stockData.forEach(stock -> {
-                StockMovement dailyStockMovement = new StockMovement("RSI", stock.getDateTime());
+                StockMovement dailyStockMovement = new StockMovement("CCI", stock.getDateTime());
                 dailyStockMovement.setStockMovementPct((stock.getClose() - stock.getOpen()) / stock.getOpen());
                 stockMovements.add(dailyStockMovement);
             });
 
-            /* Get the RSI of the stock */
-            RSI techIndicatorsResponse = technicalIndicators.rsi(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10),
-                    SeriesType.OPEN);
-            List<IndicatorData> rsiData = techIndicatorsResponse.getData();
+            /* Get the CCI of the stock */
+            CCI techIndicatorsResponse = technicalIndicators.cci(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10));
+            List<IndicatorData> cciData = techIndicatorsResponse.getData();
 
-            rsiData.forEach(data -> {
+            cciData.forEach(data -> {
                 if (data.getDateTime().getHour() == targetHour)
                 {
                     for (int i = 0; i < stockMovements.size(); i++)

@@ -1,5 +1,7 @@
-package StockData;
+package StockData.TechnicalIndicators;
 
+import StockData.StockData;
+import StockData.StockMovement;
 import org.patriques.AlphaVantageConnector;
 import org.patriques.TechnicalIndicators;
 import org.patriques.TimeSeries;
@@ -8,7 +10,7 @@ import org.patriques.input.technicalindicators.SeriesType;
 import org.patriques.input.technicalindicators.TimePeriod;
 import org.patriques.input.timeseries.OutputSize;
 import org.patriques.output.AlphaVantageException;
-import org.patriques.output.technicalindicators.TRIX;
+import org.patriques.output.technicalindicators.CMO;
 import org.patriques.output.technicalindicators.data.IndicatorData;
 import org.patriques.output.timeseries.Daily;
 
@@ -17,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * This object retrieves the triple exponential average (TRIX) value of
- * any given stock.
+ * This object retrieves the Chande momentum oscillator (CMO) of any
+ * given stock. 
  */
 
-public class TRIXStockData implements StockData
+public class CMOStockData implements StockData
 {
     @Override
     public ArrayList<StockMovement> getStockData(String api_key, String tickerSymbol, int targetHour)
@@ -47,11 +49,11 @@ public class TRIXStockData implements StockData
             });
 
             /* Get the CMO of the stock */
-            TRIX techIndicatorsResponse = technicalIndicators.trix(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10),
+            CMO techIndicatorsResponse = technicalIndicators.cmo(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10),
                     SeriesType.CLOSE);
-            List<IndicatorData> trixData = techIndicatorsResponse.getData();
+            List<IndicatorData> cmoData = techIndicatorsResponse.getData();
 
-            trixData.forEach(data -> {
+            cmoData.forEach(data -> {
                 if (data.getDateTime().getHour() == targetHour)
                 {
                     for (int i = 0; i < stockMovements.size(); i++)
