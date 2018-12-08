@@ -22,13 +22,16 @@ public class Neuron
     /* Start value if this neuron is part of the input layer */
     protected double startValue = 0;
 
+    /* Starting bias of the neuron */
+    protected double bias = 0.5;
+
 
     public Neuron()
     {
         this.inputConnections = new ArrayList<>();
         this.outputConnections = new ArrayList<>();
         sumFunction = new WeightedInputSumFunction();
-        activationFunction = new ReLUActivationFunction();
+        activationFunction = new SigmoidActivationFunction();
     }
 
     /* This constructor should be used if this neuron is part of the input layer */
@@ -37,7 +40,7 @@ public class Neuron
         this.inputConnections = new ArrayList<>();
         this.outputConnections = new ArrayList<>();
         sumFunction = new WeightedInputSumFunction();
-        activationFunction = new ReLUActivationFunction();
+        activationFunction = new SigmoidActivationFunction();
         this.startValue = startValue;
     }
 
@@ -46,6 +49,7 @@ public class Neuron
         if (inputConnections.size() > 0)
         {
             double input = sumFunction.inputSumFunction(inputConnections);
+            input += this.bias;
 
             return activationFunction.normalize(input);
         }

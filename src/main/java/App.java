@@ -1,8 +1,6 @@
 import NeuralNetwork.NeuralNetwork;
-import StockData.CCIStockData;
-import StockData.CMOStockData;
-import StockData.StockMovement;
-import StockData.TRIXStockData;
+import NeuralNetwork.ActivationFunction;
+import NeuralNetwork.SigmoidActivationFunction;
 
 import java.util.ArrayList;
 
@@ -13,7 +11,15 @@ public class App {
     public static final String API_KEY = "GMGWOUIFSQ7HLN85";
 
     public static void main(String[] args) {
-        NeuralNetwork network = new NeuralNetwork(1, 2);
+        NeuralNetwork network = new NeuralNetwork(1, 2, 2, .9);
 
+        for (int i = 1; i < 100; i++)
+        {
+            ArrayList<Double> input = new ArrayList<>();
+            ActivationFunction activationFunction = new SigmoidActivationFunction();
+            input.add(activationFunction.normalize((double)i));
+            input.add(activationFunction.normalize((double)i));
+            network.trainNetwork(input, activationFunction.normalize(i * i * i));
+        }
     }
 }
