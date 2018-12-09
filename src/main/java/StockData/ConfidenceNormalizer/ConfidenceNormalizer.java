@@ -2,5 +2,5 @@ package StockData.ConfidenceNormalizer;
 
 public interface ConfidenceNormalizer
 {
-    public double normalize(double stockPctChg);
+    double normalize(double stockPctChg);
 }

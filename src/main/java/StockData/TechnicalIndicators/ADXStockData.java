@@ -25,7 +25,7 @@ import java.util.List;
 public class ADXStockData implements StockData
 {
     @Override
-    public ArrayList<StockMovement> getStockData(String api_key, String tickerSymbol, int targetHour)
+    public ArrayList<StockMovement> getStockData(String api_key, String tickerSymbol)
     {
         ArrayList<StockMovement> stockMovements = new ArrayList<StockMovement>();
 
@@ -37,7 +37,7 @@ public class ADXStockData implements StockData
         try
         {
             /* Get the daily stock price movements */
-            Daily timeSeriesResponse = stockTimeSeries.daily(tickerSymbol, OutputSize.COMPACT);
+            Daily timeSeriesResponse = stockTimeSeries.daily(tickerSymbol, OutputSize.FULL);
             List<org.patriques.output.timeseries.data.StockData> stockData =
                     timeSeriesResponse.getStockData();
 
@@ -48,22 +48,19 @@ public class ADXStockData implements StockData
             });
 
             /* Get the ADX of the stock */
-            ADX techIndicatorsResponse = technicalIndicators.adx(tickerSymbol, Interval.SIXTY_MIN, TimePeriod.of(10));
+            ADX techIndicatorsResponse = technicalIndicators.adx(tickerSymbol, Interval.DAILY, TimePeriod.of(10));
             List<IndicatorData> adxData = techIndicatorsResponse.getData();
 
             adxData.forEach(data -> {
-                if (data.getDateTime().getHour() == targetHour)
+                for (int i = 0; i < stockMovements.size(); i++)
                 {
-                    for (int i = 0; i < stockMovements.size(); i++)
-                    {
-                        LocalDateTime date = stockMovements.get(i).getLocalDateTime();
+                    LocalDateTime date = stockMovements.get(i).getLocalDateTime();
 
-                        if (date.getDayOfYear() == data.getDateTime().getDayOfYear()
-                                && date.getYear() == data.getDateTime().getYear())
-                        {
-                            StockMovement dailyTechIndicator = stockMovements.get(i);
-                            dailyTechIndicator.setTechIndicatorVal(data.getData());
-                        }
+                    if (date.getDayOfYear() == data.getDateTime().getDayOfYear()
+                            && date.getYear() == data.getDateTime().getYear())
+                    {
+                        StockMovement dailyTechIndicator = stockMovements.get(i);
+                        dailyTechIndicator.setTechIndicatorVal(data.getData());
                     }
                 }
             });

@@ -1,6 +1,7 @@
 package NeuralNetwork;
 
 import NeuralNetwork.ActivationFunctions.ActivationFunction;
+import NeuralNetwork.ActivationFunctions.ReLUActivationFunction;
 import NeuralNetwork.ActivationFunctions.SigmoidActivationFunction;
 import NeuralNetwork.SumFunctions.InputSumFunction;
 import NeuralNetwork.SumFunctions.WeightedInputSumFunction;
@@ -28,7 +29,7 @@ public class Neuron
     protected double startValue = 0;
 
     /* Starting bias of the neuron */
-    protected double bias = 0.5;
+    protected double bias = 0;
 
 
     public Neuron()
@@ -39,22 +40,12 @@ public class Neuron
         activationFunction = new SigmoidActivationFunction();
     }
 
-    /* This constructor should be used if this neuron is part of the input layer */
-    public Neuron(double startValue)
-    {
-        this.inputConnections = new ArrayList<>();
-        this.outputConnections = new ArrayList<>();
-        sumFunction = new WeightedInputSumFunction();
-        activationFunction = new SigmoidActivationFunction();
-        this.startValue = startValue;
-    }
-
     public double getOutput()
     {
         if (inputConnections.size() > 0)
         {
             double input = sumFunction.inputSumFunction(inputConnections);
-            input += this.bias;
+            // input += this.bias;
 
             return activationFunction.normalize(input);
         }
