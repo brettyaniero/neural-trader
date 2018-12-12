@@ -45,7 +45,7 @@ public class Neuron
         if (inputConnections.size() > 0)
         {
             double input = sumFunction.inputSumFunction(inputConnections);
-            // input += this.bias;
+            input += this.bias;
 
             return activationFunction.normalize(input);
         }
